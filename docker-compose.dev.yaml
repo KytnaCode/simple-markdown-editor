@@ -9,6 +9,7 @@ services:
       - "3000:3000"
     networks:
       - app-network
+      - backend-network
     restart: always
   client:
     build:
@@ -19,6 +20,23 @@ services:
     networks:
       - app-network
     restart: always
+  db:
+    image: postgres:16-alpine3.19
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: local
+    networks:
+      - database-network
+      - backend-network
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - database-network
 
 networks:
   app-network:
+  backend-network:
+  database-network:
