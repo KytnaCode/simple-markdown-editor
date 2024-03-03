@@ -10,6 +10,8 @@ services:
     networks:
       - app-network
       - backend-network
+    environment:
+      API_PASSWORD: development
     restart: always
   client:
     build:
@@ -22,12 +24,14 @@ services:
     restart: always
   db:
     image: postgres:16-alpine3.19
-    restart: always
     environment:
       POSTGRES_PASSWORD: local
+      API_PASSWORD: development
     networks:
       - database-network
       - backend-network
+    volumes:
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
   adminer:
     image: adminer
     restart: always
